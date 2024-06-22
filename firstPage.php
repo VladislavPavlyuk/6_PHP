@@ -1,5 +1,16 @@
 <?php
+
 session_start();
+
+if (isset($_POST['name']))
+    $_SESSION['student'] = $_POST['name'];
+
+$copy = null;
+if(isset($_COOKIE["Array"]))
+{
+    $copy = unserialize($_COOKIE["Array"]);
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -12,13 +23,26 @@ session_start();
 <body>
 <div class="container">
     <div class="row">
-        <form action="" method="post">
+        <form action="secondPage.php" method="post">
 
             <div><h2 align="center">Tест 1</h2></div>
 
             <?php
+            if(isset($copy))
+            {
+                echo "Массив, прочитанный из куки, после десериализации:<br />";
+                print_r($copy);
+                echo "<br />";
+            }
+            //echo "Массив до сериализации:<br />";
+            //var_dump($arr);
+
+            //echo "<br />Массив после сериализации:<br />".$str;
+
             if (isset($_SESSION['student']))
-            echo "Студент : ".$_SESSION['student'].".<br>";
+                echo "Студент : ".$_SESSION['student'].".<br>";
+            else
+                echo "Сессионная переменная не создана!<br />";
 
             $rate = $incorrect = 0;
             $fileString = file_get_contents("test1.txt");
@@ -66,12 +90,14 @@ $questionNames[$name] = $arr2[$i][$j+5];
 
 <?php
             }
-?>
 
-            <br><input type="submit" class="btn btn-primary" value="Сохранить результат" id="second">
+?>
+            <br><input type="submit" class="btn btn-primary" value="Далее" id="second">
         </div>
         </form>
+
 <?php
+
 
     if (isset($_POST['submit']))
         {
@@ -79,12 +105,10 @@ $questionNames[$name] = $arr2[$i][$j+5];
                 if (isset($_POST[$name])) {
                     echo $name."  ".$correctAnswer;
                 }}
-?><br><button type="button" class="btn btn-primary" onclick="location.href = 'secondPage.php';">Перейти к тесту</button>
-
-<?php } ?>
+        } ?>
 
 <?php
-print_r($_SESSION);
+//vardump($_SESSION);
 echo "<br";
 
 ?>
@@ -102,6 +126,7 @@ echo "<br";
         }
         echo "Correct answers : ".$rate."<br>";
         echo "Incorrect answers : ".$incorrect."<br>";
+
         ?>
     </strong>
     </div>
