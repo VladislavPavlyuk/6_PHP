@@ -1,10 +1,10 @@
 <?php
 session_start();
-if (isset($_SESSION['rate']))
-    $rate = $_SESSION['rate'];
-else $rate = 0;
+if (isset($_SESSION['totalRate']))
+    $totalRate = $_SESSION['totalRate'];
+else $totalRate = 0;
 
-$incorrect = $notset = 0;
+$incorrect = $notset = $rate = 0;
 
 $fileString3 = file_get_contents("test3.txt");
 if (!$fileString3) echo "Error in readfile";
@@ -32,10 +32,19 @@ foreach ($questionNamesThird as $nameThird => $correctAnswer) {
         else $incorrect++;
     }
 }
+
+$rate*=5;
+
+if (isset($_SESSION['totalRate']))
+    $totalRate = $_SESSION['totalRate'];
+else $totalRate = 0;
+$totalRate += $rate;
+$_SESSION['totalRate'] = $totalRate;
+
 echo "<br>";
 echo "Not set : ".$notset."<br>";
 echo "Correct answers : ".$rate."<br>";
-echo "Incorrect answers : ".$incorrect."<br>";
+//echo "Incorrect answers : ".$incorrect."<br>";
 
 ?>
 
@@ -61,7 +70,7 @@ echo "Incorrect answers : ".$incorrect."<br>";
             </div>
             <div>
                 <label>Ваш результат : </label>
-                <strong><?php echo $rate;?></strong>
+                <strong><?php echo $totalRate;?></strong>
                 <br><br>
                 <input type="submit" class="btn btn-primary" name="Restart" value="Пройти заново" id="first">
             </div>

@@ -4,11 +4,11 @@ session_start();
 if (isset($_SESSION['student']))
     echo "Студент : ".$_SESSION['student'].".<br>";
 
-if (isset($_SESSION['rate']))
-    $rate = $_SESSION['rate'];
-else $rate = 0;
+if (isset($_SESSION['totalRate']))
+    $totalRate = $_SESSION['totalRate'];
+else $totalRate = 0;
 
-$incorrect = 0;
+$incorrect = $notset = $rate = 0;
 
 function countSimilarElementsInArray($array,$element){
     $result = 0;
@@ -102,11 +102,17 @@ foreach ($questionArraySecond as $nameSecond) {
 
 $incorrect = $q - $notset - $rate;
 
-$_SESSION['rate'] = $rate;
+$rate*=3;
+
+if (isset($_SESSION['totalRate']))
+    $totalRate = $_SESSION['totalRate'];
+else $totalRate = 0;
+$totalRate += $rate;
+$_SESSION['totalRate']=$totalRate;
 
 echo "Not set : ".$notset."<br>";
 echo "Correct answers : ".$rate."<br>";
-echo "Incorrect answers : ".$incorrect."<br>";
+//echo "Incorrect answers : ".$incorrect."<br>";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -125,12 +131,12 @@ echo "Incorrect answers : ".$incorrect."<br>";
             if (isset($_SESSION['student']))
                 echo "Студент : ".$_SESSION['student'].".<br>";
 
-            if (isset($_SESSION['rate']))
-                $rate = $_SESSION['rate'];
-            else $rate = 0;
-            echo "Correct : ".$rate.".<br>";
+            if (isset($_SESSION['totalRate']))
+                $totalRate = $_SESSION['totalRate'];
+            else $totalRate = 0;
+            echo "Total Score : ".$totalRate.".<br>";
 
-            $incorrect = $notset = 0;
+            $incorrect = $notset = $rate = 0;
 
             $fileString = file_get_contents("test3.txt");
             if (!$fileString) echo "Error in readfile";

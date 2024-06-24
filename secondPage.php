@@ -5,11 +5,11 @@ session_start();
 if (isset($_SESSION['student']))
     echo "Студент : ".$_SESSION['student'].".<br>";
 
-if (isset($_SESSION['rate']))
-    $rate = $_SESSION['rate'];
-else $rate = 0;
+if (isset($_SESSION['totalRate']))
+    $totalRate = $_SESSION['totalRate'];
+else $totalRate = 0;
 
-$incorrect = 0;
+$incorrect = $notset = $rate = 0;
 
 $fileStringFirst = file_get_contents("test1.txt");
 
@@ -40,7 +40,7 @@ foreach ($questionNamesFirst as $nameFirst => $correctAnswer) {
         else $incorrect++;
     }
 }
-
+$_SESSION['totalRate'] = $rate;
 ?>
 
 <!DOCTYPE html>
@@ -62,7 +62,7 @@ foreach ($questionNamesFirst as $nameFirst => $correctAnswer) {
                 echo "Студент : ".$_SESSION['student'].".<br>";
 
 
-            echo "Correct : ".$rate.".<br>";
+            echo "Total Score : ".$_SESSION['totalRate'].".<br>";
 
             //$rate = $incorrect = 0;
 
@@ -126,84 +126,11 @@ foreach ($questionNamesFirst as $nameFirst => $correctAnswer) {
                        value="3"><?php echo '  '.$arr3[$i][$j+4][$u] ?><br>
                 <?php
             }
-            $_SESSION['rate'] = $rate;
+
             ?>
             <br><input type="submit" class="btn btn-primary" value="Далее" >
         </form>
 
-
-        <strong>
-            <?php
-            // var_dump($questionArray);
-            function countSimilarElementsInArray($array,$element){
-                $result = 0;
-                foreach ($array as $e ) {
-                    foreach ($e as $key => $value) {
-                        if ($key == $element) $result++;
-                    }
-                }
-                return $result;
-            }
-
-            foreach ($questionArray as $name) {
-                foreach ($name as $question => $correctAnswer) {
-                    //echo $question." ".$correctAnswer ." countSimilarElementsInArray : ".
-                    //    countSimilarElementsInArray($questionArray,$question)."<br>";
-                }
-            }
-
-            $a = $aa = $c = $notset = $temp = 0;
-            $questionOld = "";
-
-            foreach ($questionArray as $name) {
-                foreach ($name as $question => $correctAnswer) {
-                    $questi = substr($question, 0, -2);
-
-                    if ($questionOld != $questi) {
-                        $aa = 0;
-                        $questionOld = $questi;
-                    }
-
-                    if (!isset($_POST[$questi])) {
-                        $temp++;
-                        //echo $questi . " is not set!" . "<br>";
-                        $c = countSimilarElementsInArray($questionArray,$question);
-                        if ($temp == $c) {
-                            $notset++;
-                            $temp = 0;
-                        }
-                    }
-                    else if (countSimilarElementsInArray($questionArray,$question)==count($_POST[$questi])){
-
-                        foreach ($_POST[$questi] as $key=>$answer) {
-                            //echo $questi . " is  set!" . "<br>";
-                            //echo $answer . " " . $correctAnswer . "<br>";
-                            if ($answer == $correctAnswer) $aa++;
-                        }
-
-                        $c = countSimilarElementsInArray($questionArray,$question);
-                        //echo "correct : " . $aa . ' count($_POST[$question]) = ' . $c . "<br><br>";
-                        if ($c > 0) {
-                            if ($c == $aa) {
-                                $rate++;
-                                $aa = 0;
-                            }
-                        }
-                    }
-
-                }
-                $a = $c = 0;
-            }
-
-            $incorrect = $q - $notset - $rate;
-
-
-
-            echo "Not set : ".$notset."<br>";
-            echo "Correct answers : ".$rate."<br>";
-            echo "Incorrect answers : ".$incorrect."<br>";
-            ?>
-        </strong>
     </div>
 </div>
 </div>
