@@ -1,21 +1,5 @@
 <?php
 session_start();
-if(isset($_GET["del"]))
-{
-    // удаляем куки
-    setcookie("Array", "", time()-3600);
-    // Перенаправление на страницу serialize.php
-    header("Location:index.php");
-    exit;
-}
-$copy = null;
-if(isset($_COOKIE["Array"]))
-{
-    $copy = unserialize($_COOKIE["Array"]);
-}
-$arr = array("first"=>"no", "second"=>"no", "third"=>"no");
-$str = serialize($arr);
-setcookie("Array", $str);
 ?>
 
 <!DOCTYPE html>
@@ -32,9 +16,9 @@ setcookie("Array", $str);
 </head>
 <body>
 <?php
-    $nameErr = $name = "";
+$nameErr = $name = "";
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if (($_SERVER["REQUEST_METHOD"] == "POST")&&(isset($_POST["name"]))) {
     $name = test_input($_POST["name"]);
 }
 function test_input($data) {
@@ -43,7 +27,7 @@ function test_input($data) {
     $data = htmlspecialchars($data);
     return $data;
 }
-    ?>
+?>
 <div class="container">
     <div class="column">
         <form action="firstPage.php" method="post">
@@ -54,38 +38,22 @@ function test_input($data) {
             <div>
                 <label>Введите имя</label>
                 <label><input type="text" name="name"></label><br>
-<?php
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if (empty($_POST["name"])) {
-                $nameErr = "Name is required";
-            } else {
-                $name = test_input($_POST["name"]);
-            }
-        }
-?>
+                <?php
+                if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                    if (empty($_POST["name"])) {
+                        $nameErr = "Name is required";
+                    } else {
+                        $name = test_input($_POST["name"]);
+                    }
+                }
+                ?>
                 <span class="error" ><?php echo $nameErr;?></span>
                 <br><br>
                 <input type="submit" class="btn btn-primary" name="submit" value="Далее" id="first">
             </div>
 
-
+        </form>
         <?php
-        if(isset($copy))
-        {
-            echo "Массив, прочитанный из куки, после десериализации:<br />";
-            print_r($copy);
-            echo "<br />";
-        }
-        echo "Массив до сериализации:<br />";
-        var_dump($arr);
-        echo "<br />Массив после сериализации:<br />".$str;
-        ?>
-        <br />
-        <a href="index.php?del=1">Очистить куки</a>
-        <br />
-        <a href="firstPage.php">Перейти на страницу</a>
-</form>
-<?php
         /*if (isset($_POST['submit']) && !empty($_POST["name"]))
         {
             $_SESSION['student'] = $_POST['name'];
@@ -93,11 +61,14 @@ function test_input($data) {
             <br><button type="button" class="btn btn-primary" onclick="location.href = 'firstPage.php';">Перейти к тесту</button>
     </div>
         <?php }*/
-         ?>
+        ?>
 
-</div>
+    </div>
 </body>
 </html>
+
+
+
 
 
 

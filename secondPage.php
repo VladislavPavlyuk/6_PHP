@@ -2,6 +2,45 @@
 
 session_start();
 
+if (isset($_SESSION['student']))
+    echo "Студент : ".$_SESSION['student'].".<br>";
+
+if (isset($_SESSION['rate']))
+    $rate = $_SESSION['rate'];
+else $rate = 0;
+
+$incorrect = 0;
+
+$fileStringFirst = file_get_contents("test1.txt");
+
+if (!$fileStringFirst) echo "Error in readfile";
+else {
+    $arrFirst = explode('|', trim($fileStringFirst, "[]"));
+
+    foreach ($arrFirst as $i =>  $a)
+        if (!$a=="") {
+            $arrFirst2[$i] = explode(';', trim($a, "[]"));
+        }
+}
+
+for ($i = $j =0; $i < count($arrFirst2); $i++) {
+    $nameFirst = "question" . strval($i + 1);
+
+    $questionNamesFirst[$nameFirst] = $arrFirst2[$i][$j + 5];
+}
+
+foreach ($questionNamesFirst as $nameFirst => $correctAnswer) {
+    if (!isset($_POST[$nameFirst])) {
+        echo $nameFirst." is not set!".gettype($correctAnswer)." : ".$correctAnswer."<br>";
+        //echo "Array length = ".count($questionNames)."<br>";
+    }
+    else if (isset($_POST[$nameFirst])) {
+        echo $nameFirst." : ".gettype($_POST[$nameFirst])." : ".$_POST[$nameFirst]."<br>";
+        if ($_POST[$nameFirst] == $correctAnswer) $rate++;
+        else $incorrect++;
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -14,7 +53,7 @@ session_start();
 <body>
 <div class="container">
     <div class="row">
-        <form action="" method="post">
+        <form action="thirdPage.php" method="post">
 
             <div><h2 align="center">Tест 2</h2></div>
 
@@ -22,9 +61,13 @@ session_start();
             if (isset($_SESSION['student']))
                 echo "Студент : ".$_SESSION['student'].".<br>";
 
-            $rate = $incorrect = 0;
+
+            echo "Correct : ".$rate.".<br>";
+
+            //$rate = $incorrect = 0;
 
             $fileString = file_get_contents("test2.txt");
+
             if (!$fileString) echo "Error in readfile";
             else {
                 $arr = explode('|', trim($fileString, "[]"));
@@ -56,10 +99,10 @@ session_start();
                 echo '<label>'.$arr3[$i][$j+5][$u] .'</label>'; //correct answer
                 echo ' , ';
                 if (count($arr3[$i][$j+5])>1)
-                echo '<label>'.$arr3[$i][$j+5][$u+1] .'</label>'; //correct answer
+                    echo '<label>'.$arr3[$i][$j+5][$u+1] .'</label>'; //correct answer
                 echo ' , ';
                 if (count($arr3[$i][$j+5])>2)
-                echo '<label>'.$arr3[$i][$j+5][$u+2] .'</label>'; //correct answer
+                    echo '<label>'.$arr3[$i][$j+5][$u+2] .'</label>'; //correct answer
 
                 echo '<br>';
 
@@ -83,41 +126,31 @@ session_start();
                        value="3"><?php echo '  '.$arr3[$i][$j+4][$u] ?><br>
                 <?php
             }
+            $_SESSION['rate'] = $rate;
             ?>
-            <br><input type="submit" class="btn btn-primary" value="Далее" id="second">
+            <br><input type="submit" class="btn btn-primary" value="Далее" >
         </form>
-        <?php
-        //var_dump($questionArray);
 
-        if (isset($_POST['submit'])) {
-            //var_dump($questionArray);
-            foreach ($questionArray as $checkBoxName) {
-                foreach ($checkBoxName as $question => $correctAnswer) {
-                 //   echo $question." ".$correctAnswer . "<br>";
-                }
-            }
-        }
-        ?>
 
         <strong>
             <?php
-               // var_dump($questionArray);
-        function countSimilarElementsInArray($array,$element){
-            $result = 0;
-            foreach ($array as $e ) {
-                foreach ($e as $key => $value) {
-                    if ($key == $element) $result++;
+            // var_dump($questionArray);
+            function countSimilarElementsInArray($array,$element){
+                $result = 0;
+                foreach ($array as $e ) {
+                    foreach ($e as $key => $value) {
+                        if ($key == $element) $result++;
+                    }
+                }
+                return $result;
+            }
+
+            foreach ($questionArray as $name) {
+                foreach ($name as $question => $correctAnswer) {
+                    //echo $question." ".$correctAnswer ." countSimilarElementsInArray : ".
+                    //    countSimilarElementsInArray($questionArray,$question)."<br>";
                 }
             }
-            return $result;
-        }
-
-       foreach ($questionArray as $name) {
-           foreach ($name as $question => $correctAnswer) {
-                   //echo $question." ".$correctAnswer ." countSimilarElementsInArray : ".
-                   //    countSimilarElementsInArray($questionArray,$question)."<br>";
-               }
-           }
 
             $a = $aa = $c = $notset = $temp = 0;
             $questionOld = "";
@@ -158,11 +191,13 @@ session_start();
                         }
                     }
 
-                    }
-            $a = $c = 0;
+                }
+                $a = $c = 0;
             }
 
             $incorrect = $q - $notset - $rate;
+
+
 
             echo "Not set : ".$notset."<br>";
             echo "Correct answers : ".$rate."<br>";
@@ -170,7 +205,7 @@ session_start();
             ?>
         </strong>
     </div>
-    </div>
+</div>
 </div>
 </body>
 </html>

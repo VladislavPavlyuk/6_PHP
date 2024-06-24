@@ -4,6 +4,39 @@ if (isset($_SESSION['rate']))
     $rate = $_SESSION['rate'];
 else $rate = 0;
 
+$incorrect = $notset = 0;
+
+$fileString3 = file_get_contents("test3.txt");
+if (!$fileString3) echo "Error in readfile";
+else {
+    $arrThird = explode('|', trim($fileString3, "[]"));
+
+    foreach ($arrThird as $i =>  $a)
+        if (!$a == "") {
+            $arrThird2[$i] = explode(';', trim($a, "[]"));
+        }
+}
+
+for ($i = $j = $u = 0; $i < count($arrThird2); $i++) {
+    $nameThird = "question" . strval($i + 1);
+    $questionNamesThird[$nameThird] = $arrThird2[$i][$j + 2];
+}
+foreach ($questionNamesThird as $nameThird => $correctAnswer) {
+    if (!isset($_POST[$nameThird])) {
+        $notset++;
+    }
+    else if (isset($_POST[$nameThird])) {
+        $clearString = trim(str_replace(" ", "", $_POST[$nameThird]));
+        if ($clearString == $correctAnswer) $rate++;
+        else if ($clearString == "") $notset++;
+        else $incorrect++;
+    }
+}
+echo "<br>";
+echo "Not set : ".$notset."<br>";
+echo "Correct answers : ".$rate."<br>";
+echo "Incorrect answers : ".$incorrect."<br>";
+
 ?>
 
 <!DOCTYPE html>
