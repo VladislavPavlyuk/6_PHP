@@ -42,8 +42,8 @@ $totalRate += $rate;
 $_SESSION['totalRate'] = $totalRate;
 
 echo "<br>";
-echo "Not set : ".$notset."<br>";
-echo "Correct answers : ".$rate."<br>";
+//echo "Not set : ".$notset."<br>";
+//echo "Correct answers : ".$rate."<br>";
 //echo "Incorrect answers : ".$incorrect."<br>";
 
 ?>

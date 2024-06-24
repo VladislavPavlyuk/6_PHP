@@ -1,8 +1,7 @@
 <?php
 session_start();
 
-if (isset($_SESSION['student']))
-    echo "Студент : ".$_SESSION['student'].".<br>";
+//if (isset($_SESSION['student']))     echo "Студент : ".$_SESSION['student'].".<br>";
 
 if (isset($_SESSION['totalRate']))
     $totalRate = $_SESSION['totalRate'];
@@ -36,6 +35,8 @@ else {
         }
 }
 
+
+
 for ($i = $j = $u = 0; $i < count($arrSecond2); $i++) {
 
     $nameSecond = "question" . strval($i + 1) . "[]";
@@ -56,7 +57,7 @@ foreach ($questionArraySecond as $nameSecond) {
 }
 
 $q = count($arrSecond2);
-echo "<br>Questions: ".$q."<br>";
+//echo "<br>Questions: ".$q."<br>";
 
 $a = $aa = $c = $notset = $temp = 0;
 $questionOld = "";
@@ -110,8 +111,8 @@ else $totalRate = 0;
 $totalRate += $rate;
 $_SESSION['totalRate']=$totalRate;
 
-echo "Not set : ".$notset."<br>";
-echo "Correct answers : ".$rate."<br>";
+//echo "Not set : ".$notset."<br>";
+//echo "Correct answers : ".$rate."<br>";
 //echo "Incorrect answers : ".$incorrect."<br>";
 ?>
 <!DOCTYPE html>
@@ -155,9 +156,10 @@ echo "Correct answers : ".$rate."<br>";
                 echo '<label>'.'<b>'.$arr2[$i][$j].'</b>' .".  ".'</label>';   //N
                 echo '<label>'.$arr2[$i][$j+1] .'</label>'; //question
                 echo '<br>';
-                echo '<label>'.$arr2[$i][$j+2] .'</label>'; //correct answer
+            if (isset($_SESSION['student'])&&($_SESSION['student']) == 'Admin') {
+                echo '<label>' . $arr2[$i][$j + 2] . '</label>'; //correct answer
                 echo '<br>';
-
+            }
             $name = "question" . strval($i + 1);
             $questionNames[$name] = $arr2[$i][$j+2];
                 ?>

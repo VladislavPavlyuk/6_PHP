@@ -51,18 +51,7 @@ function test_input($data) {
                 <br><br>
                 <input type="submit" class="btn btn-primary" name="submit" value="Далее" id="first">
             </div>
-
         </form>
-        <?php
-        /*if (isset($_POST['submit']) && !empty($_POST["name"]))
-        {
-            $_SESSION['student'] = $_POST['name'];
-            ?>
-            <br><button type="button" class="btn btn-primary" onclick="location.href = 'firstPage.php';">Перейти к тесту</button>
-    </div>
-        <?php }*/
-        ?>
-
     </div>
 </body>
 </html>
