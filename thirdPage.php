@@ -48,19 +48,11 @@ else {
         }
 }
 
-
 foreach ( $arrSecond3 as $key => $item) {
     $m = $mixedArray[$key];
     $mixedArr[$key] = $arrSecond3[$m];
 }
 $arrSecond3 = $mixedArr;
-//var_dump($arrSecond3);
-
-echo '<br>';
-foreach ($mixedArray as $i =>  $a) {
-    echo ' '.$a.' ';
-}
-echo '<br>';
 
 for ($i = $j = $u = 0; $i < count($arrSecond3); $i++) {
 
@@ -82,7 +74,6 @@ foreach ($questionArraySecond as $nameSecond) {
 }
 
 $q = count($arrSecond2);
-//echo "<br>Questions: ".$q."<br>";
 
 $a = $aa = $c = $notset = $temp = 0;
 $questionOld = "";
@@ -160,7 +151,9 @@ $_SESSION['totalRate']=$totalRate;
             if (isset($_SESSION['totalRate']))
                 $totalRate = $_SESSION['totalRate'];
             else $totalRate = 0;
-            echo "Total Score : ".$totalRate.".<br>";
+
+            if (isset($_SESSION['student'])&&($_SESSION['student'] == 'Admin')) {
+                echo "Total Score : ".$_SESSION['totalRate'].".<br>";}
 
             $incorrect = $notset = $rate = 0;
 
@@ -185,12 +178,18 @@ $_SESSION['totalRate']=$totalRate;
             $arrThird2 = $mixedArr;
 
             for ($i = $j = $u = 0; $i < count($arrThird2); $i++) {
-                echo '<br>';
-                echo '<label>'.'<b>'.$arrThird2[$i][$j].'</b>' .".  ".'</label>';   //N
-                echo '<label>'.$arrThird2[$i][$j+1] .'</label>'; //question
+                if (isset($_SESSION['student'])&&($_SESSION['student'] == 'Admin')) {
+                    echo '<br><label><b>';
+                    echo $arrThird2[$i][$j];                                                //N
+                    echo ' </b></label>';
+                }   else
+                    echo '<br><label><b>'.($i+1).'</b>';
+
+                //echo '<br><label><b>'.$arrThird2[$i][$j].'</b>' .".  ".'</label>';  //N
+                echo '<label>'.'.'.$arrThird2[$i][$j+1] .'</label>'; //question
                 echo '<br>';
             if (isset($_SESSION['student'])&&($_SESSION['student']) == 'Admin') {
-                echo '<label>' . $arrThird2[$i][$j + 2] . '</label>'; //correct answer
+                echo '<label><b>' . $arrThird2[$i][$j + 2] . '</b></label>'; //correct answer
                 echo '<br>';
             }
             $name = "question" . strval($i + 1);

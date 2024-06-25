@@ -57,17 +57,18 @@ function randomMixArray($array)
             }
             $arrFirst2 = $mixedArrFirst;
 
-            for ($i = $j =0; $i < count($arrFirst2); $i++) {
-                ?>
-                <br>
-                <label><b><?php echo $arrFirst2[$i][$j] ?></b></label>
-                <label><?php echo $arrFirst2[$i][$j+1] ?></label>
-                <?php if (isset($_SESSION['student'])&&($_SESSION['student'] == 'Admin')) {
-                echo '<br>'.'Правильный ответ : ' . $arrFirst2[$i][$j + 5] . '<br>';
-                } ?>
+            for ($i = $j = 0; $i < count($arrFirst2); $i++) {
+            if (isset($_SESSION['student'])&&($_SESSION['student'] == 'Admin')) {
+                echo '<br><label><b>';
+                echo $arrFirst2[$i][$j];
+                echo '</b></label>';
+            }   else
+                echo '<br><label><b>'.($i+1).'</b>';
+                echo '<label>'.'.'.$arrFirst2[$i][$j+1].'</label>';
+                if (isset($_SESSION['student'])&&($_SESSION['student'] == 'Admin')) {
+                echo '<br><b>'.'Правильный ответ : ' . $arrFirst2[$i][$j + 5] . '</b><br>';
+                }
 
-
-                <?php
                 $name="question".strval($i+1);
 
                 $questionNames[$name] = $arrFirst2[$i][$j+5];

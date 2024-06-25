@@ -57,7 +57,7 @@ foreach ($questionNamesFirst as $nameFirst => $correctAnswer) {
         //echo "Array length = ".count($questionNames)."<br>";
     }
     else if (isset($_POST[$nameFirst])) {
-        echo $nameFirst." : ".gettype($_POST[$nameFirst])." : ".$_POST[$nameFirst]."<br>";
+       // echo $nameFirst." : ".gettype($_POST[$nameFirst])." : ".$_POST[$nameFirst]."<br>";
         if ($_POST[$nameFirst] == $correctAnswer) $rate++;
         else $incorrect++;
     }
@@ -83,7 +83,8 @@ $_SESSION['totalRate'] = $rate;
             if (isset($_SESSION['student']))
                 echo "Студент : ".$_SESSION['student'].".<br>";
 
-            echo "Total Score : ".$_SESSION['totalRate'].".<br>";
+            if (isset($_SESSION['student'])&&($_SESSION['student'] == 'Admin')) {
+            echo "Total Score : ".$_SESSION['totalRate'].".<br>";}
 
             $fileStringSecond = file_get_contents("test2.txt");
 
@@ -116,10 +117,16 @@ $_SESSION['totalRate'] = $rate;
             $q = count($arrSecond2);
 
             for ($i = $j = $u = 0; $i < count($arrSecond2); $i++) {
+                if (isset($_SESSION['student'])&&($_SESSION['student'] == 'Admin')) {
+                    echo '<br><label><b>';
+                    echo $arrSecond3[$i][$j][$u];                                           //N
+                    echo '</b></label>';
+                }   else
+                    echo '<br><label><b>'.($i+1).'</b>';
 
-                echo '<br>';
-                echo '<label>'.'<b>'.$arrSecond3[$i][$j][$u].'</b>' .".  ".'</label>';   //N
-                echo '<label>'.$arrSecond3[$i][$j+1][$u] .'</label>'; //question
+                //echo '<br>';
+                //echo '<label>'.'<b>'.$arrSecond3[$i][$j][$u].'</b>' .".  ".'</label>';   //N
+                echo '<label>'.'.'.$arrSecond3[$i][$j+1][$u] .'</label>'; //question
 
                 //echo '<label>'.$arr3[$i][$j+2][$u] .'</label>'; //radio1
                 //echo ' , ';
@@ -128,13 +135,13 @@ $_SESSION['totalRate'] = $rate;
                 //echo '<label>'.$arr3[$i][$j+4][$u] .'</label>'; //radio3
                 //echo ' , ';
                 if (isset($_SESSION['student'])&&($_SESSION['student']) == 'Admin') {
-                echo '<br><label>' . 'Правильный ответ' . $arrSecond3[$i][$j + 5][$u] . '</label>'; //correct answer
+                echo '<br><label><b>' . 'Правильный ответ : ' . $arrSecond3[$i][$j + 5][$u] . '</b></label>'; //correct answer
                 echo ' , ';
                 if (count($arrSecond3[$i][$j + 5]) > 1)
-                    echo '<label>' . $arrSecond3[$i][$j + 5][$u + 1] . '</label>'; //correct answer
+                    echo '<label><b>' . $arrSecond3[$i][$j + 5][$u + 1] . '</b></label>'; //correct answer
                 echo ' , ';
                 if (count($arrSecond3[$i][$j + 5]) > 2)
-                    echo '<label>' . $arrSecond3[$i][$j + 5][$u + 2] . '</label>'; //correct answer
+                    echo '<label><b>' . $arrSecond3[$i][$j + 5][$u + 2] . '</b></label>'; //correct answer
             }
                 echo '<br>';
 
@@ -146,7 +153,7 @@ $_SESSION['totalRate'] = $rate;
                     $questionArraySecond[] = Array ($nameSecond => $arrSecond3[$i][$j+5][$u+1]);
                 if (isset($arr3[$i][$j+5][$u+2]))
                     $questionArraySecond[] = Array ($nameSecond => $arrSecond3[$i][$j+5][$u+2]);
-                //var_dump($questionArray);
+
                 ?>
                 <input type="checkbox" name='<?php echo $nameSecond ?>'
                        value="1"><?php echo '  '.$arrSecond3[$i][$j+2][$u] ?><br>
