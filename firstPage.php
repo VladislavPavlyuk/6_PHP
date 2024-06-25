@@ -1,7 +1,17 @@
 <?php
+/*if ((isset($_POST['name']))&&($_POST['name']=="")){
+    header('Location: ' . $_SERVER['HTTP_REFERER']);
+    exit();
+
+}*/
+
 session_start();
 if (isset($_POST['name']))
     $_SESSION['student'] = $_POST['name'];
+else {
+    header('Location: ' . $_SERVER['HTTP_REFERER']);
+    exit();
+}
 
 function randomMixArray($array)
 {
@@ -32,7 +42,7 @@ function randomMixArray($array)
 
             <?php
             if (isset($_SESSION['student']))
-                echo "Студент : ".$_SESSION['student'].".<br>";
+                echo "Студент : ".$_SESSION['student']."<br>";
             else
                 echo "Сессионная переменная не создана!<br />";
 
@@ -47,15 +57,15 @@ function randomMixArray($array)
                     }
             }
 
-            $mixedArray = randomMixArray($arrFirst);
+            $mixedArrayFirst = randomMixArray($arrFirst);
 
-            $_SESSION['$mixedArray'] = $mixedArray;
+            $_SESSION['$mixedArrayFirst'] = $mixedArrayFirst;
 
             foreach ( $arrFirst2 as $key => $item) {
-                $m = $mixedArray[$key];
-                $mixedArrFirst[$key] = $arrFirst2[$m];
+                $m = $mixedArrayFirst[$key];
+                $tempArrFirst[$key] = $arrFirst2[$m];
             }
-            $arrFirst2 = $mixedArrFirst;
+            $arrFirst2 = $tempArrFirst;
 
             for ($i = $j = 0; $i < count($arrFirst2); $i++) {
             if (isset($_SESSION['student'])&&($_SESSION['student'] == 'Admin')) {

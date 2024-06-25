@@ -1,16 +1,12 @@
 <?php
 session_start();
 
-if (isset($_SESSION['$mixedArray']))
-    $mixedArray = $_SESSION['$mixedArray'];
-
-if (isset($_SESSION['totalRate']))
-    $totalRate = $_SESSION['totalRate'];
-else $totalRate = 0;
+if (isset($_SESSION['$mixedArraySecond']))
+    $mixedArraySecond = $_SESSION['$mixedArraySecond'];
 
 function randomMixArray($array)
 {
-    $mixedArr[0] = $r = 0;
+    $mixedArr[0]  = 0;
     for ($i = 0; $i < count($array) - 1; $i++) {
         do {
             $r = rand(0, count($array)-2);
@@ -49,10 +45,10 @@ else {
 }
 
 foreach ( $arrSecond3 as $key => $item) {
-    $m = $mixedArray[$key];
-    $mixedArr[$key] = $arrSecond3[$m];
+    $m = $mixedArraySecond[$key];
+    $temp[$key] = $arrSecond3[$m];
 }
-$arrSecond3 = $mixedArr;
+$arrSecond3 = $temp;
 
 for ($i = $j = $u = 0; $i < count($arrSecond3); $i++) {
 
@@ -119,13 +115,8 @@ foreach ($questionArraySecond as $nameSecond) {
 
 $incorrect = $q - $notset - $rate;
 
-$rate*=3;
 
-if (isset($_SESSION['totalRate']))
-    $totalRate = $_SESSION['totalRate'];
-else $totalRate = 0;
-$totalRate += $rate;
-$_SESSION['totalRate']=$totalRate;
+$_SESSION['secondRate'] = $rate;
 
 //echo "Not set : ".$notset."<br>";
 //echo "Correct answers : ".$rate."<br>";
@@ -148,12 +139,12 @@ $_SESSION['totalRate']=$totalRate;
             if (isset($_SESSION['student']))
                 echo "Студент : ".$_SESSION['student'].".<br>";
 
-            if (isset($_SESSION['totalRate']))
-                $totalRate = $_SESSION['totalRate'];
-            else $totalRate = 0;
+            if (isset($_SESSION['secondRate']))
+                $secondRate = $_SESSION['secondRate'];
+            else $secondRate = 0;
 
             if (isset($_SESSION['student'])&&($_SESSION['student'] == 'Admin')) {
-                echo "Total Score : ".$_SESSION['totalRate'].".<br>";}
+                echo "Score : ".$_SESSION['secondRate'].".<br>";}
 
             $incorrect = $notset = $rate = 0;
 
@@ -168,14 +159,15 @@ $_SESSION['totalRate']=$totalRate;
                     }
             }
 
-            $mixedArray = randomMixArray($arrThird);
-            $_SESSION['$mixedArray'] = $mixedArray;
+            $mixedArrayThird = randomMixArray($arrThird);
+            $_SESSION['$mixedArrayThird'] = $mixedArrayThird;
 
             foreach ( $arrThird2 as $key => $item) {
-                $m = $mixedArray[$key];
-                $mixedArr[$key] = $arrThird2[$m];
+                $m = $mixedArrayThird[$key];
+                $tempArrayThird[$key] = $arrThird2[$m];
             }
-            $arrThird2 = $mixedArr;
+
+            $arrThird2 = $tempArrayThird;
 
             for ($i = $j = $u = 0; $i < count($arrThird2); $i++) {
                 if (isset($_SESSION['student'])&&($_SESSION['student'] == 'Admin')) {
@@ -204,7 +196,7 @@ $_SESSION['totalRate']=$totalRate;
             }
             ?>
 
-            <br><input type="submit" class="btn btn-primary" value="Далее" id="third">
+            <br><input type="submit" class="btn btn-primary" value="Узнать результат" id="third">
 
         </form>
     </div>

@@ -2,12 +2,8 @@
 
 session_start();
 
-if (isset($_SESSION['$mixedArray']))
-    $mixedArray = $_SESSION['$mixedArray'];
-
-if (isset($_SESSION['totalRate']))
-    $totalRate = $_SESSION['totalRate'];
-else $totalRate = 0;
+if (isset($_SESSION['$mixedArrayFirst']))
+    $mixedArrayFirst = $_SESSION['$mixedArrayFirst'];
 
 function randomMixArray($array)
 {
@@ -35,15 +31,11 @@ else {
         }
 }
 
-$mixedArray = randomMixArray($arrFirst);
-
-$_SESSION['$mixedArray'] = $mixedArray;
-
 foreach ( $arrFirst2 as $key => $item) {
-    $m = $mixedArray[$key];
-    $mixedArrFirst[$key] = $arrFirst2[$m];
+    $m = $mixedArrayFirst[$key];
+    $temp[$key] = $arrFirst2[$m];
 }
-$arrFirst2 = $mixedArrFirst;
+$arrFirst2 = $temp;
 
 for ($i = $j =0; $i < count($arrFirst2); $i++) {
     $nameFirst = "question" . strval($i + 1);
@@ -62,7 +54,7 @@ foreach ($questionNamesFirst as $nameFirst => $correctAnswer) {
         else $incorrect++;
     }
 }
-$_SESSION['totalRate'] = $rate;
+$_SESSION['firstRate'] = $rate;
 ?>
 
 <!DOCTYPE html>
@@ -84,7 +76,7 @@ $_SESSION['totalRate'] = $rate;
                 echo "Студент : ".$_SESSION['student'].".<br>";
 
             if (isset($_SESSION['student'])&&($_SESSION['student'] == 'Admin')) {
-            echo "Total Score : ".$_SESSION['totalRate'].".<br>";}
+            echo "Score : ".$rate.".<br>";}
 
             $fileStringSecond = file_get_contents("test2.txt");
 
@@ -103,16 +95,16 @@ $_SESSION['totalRate'] = $rate;
                     }
             }
 
-            $mixedArray = randomMixArray($arrSecond);
+            $mixedArraySecond = randomMixArray($arrSecond);
 
-            $_SESSION['$mixedArray'] = $mixedArray;
+            $_SESSION['$mixedArraySecond'] = $mixedArraySecond;
 
             foreach ( $arrSecond3 as $key => $item) {
-                $m = $mixedArray[$key];
-                $mixedArr[$key] = $arrSecond3[$m];
+                $m = $mixedArraySecond[$key];
+                $tempArrSecond[$key] = $arrSecond3[$m];
             }
 
-            $arrSecond3 = $mixedArr;
+            $arrSecond3 = $tempArrSecond;
 
             $q = count($arrSecond2);
 
@@ -124,16 +116,8 @@ $_SESSION['totalRate'] = $rate;
                 }   else
                     echo '<br><label><b>'.($i+1).'</b>';
 
-                //echo '<br>';
-                //echo '<label>'.'<b>'.$arrSecond3[$i][$j][$u].'</b>' .".  ".'</label>';   //N
                 echo '<label>'.'.'.$arrSecond3[$i][$j+1][$u] .'</label>'; //question
 
-                //echo '<label>'.$arr3[$i][$j+2][$u] .'</label>'; //radio1
-                //echo ' , ';
-                //echo '<label>'.$arr3[$i][$j+3][$u] .'</label>'; //radio2
-                //echo ' , ';
-                //echo '<label>'.$arr3[$i][$j+4][$u] .'</label>'; //radio3
-                //echo ' , ';
                 if (isset($_SESSION['student'])&&($_SESSION['student']) == 'Admin') {
                 echo '<br><label><b>' . 'Правильный ответ : ' . $arrSecond3[$i][$j + 5][$u] . '</b></label>'; //correct answer
                 echo ' , ';

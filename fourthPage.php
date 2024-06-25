@@ -1,24 +1,8 @@
 <?php
 session_start();
 
-if (isset($_SESSION['$mixedArray']))
-    $mixedArray = $_SESSION['$mixedArray'];
-
-if (isset($_SESSION['totalRate']))
-    $totalRate = $_SESSION['totalRate'];
-else $totalRate = 0;
-
-function randomMixArray($array)
-{
-    $mixedArr[0] = $r = 0;
-    for ($i = 0; $i < count($array) - 1; $i++) {
-        do {
-            $r = rand(0, count($array)-2);
-        } while (array_search($r, $mixedArr) > -1);
-        $mixedArr[$i] = $r;
-    }
-    return $mixedArr;
-}
+if (isset($_SESSION['$mixedArrayThird']))
+    $mixedArrayThird = $_SESSION['$mixedArrayThird'];
 
 $incorrect = $notset = $rate = 0;
 
@@ -34,10 +18,10 @@ else {
 }
 
 foreach ( $arrThird2 as $key => $item) {
-    $m = $mixedArray[$key];
-    $mixedArr[$key] = $arrThird2[$m];
+    $m = $mixedArrayThird[$key];
+    $temp[$key] = $arrThird2[$m];
 }
-$arrThird2 = $mixedArr;
+$arrThird2 = $temp;
 
 for ($i = $j = $u = 0; $i < count($arrThird2); $i++) {
     $nameThird = "question" . strval($i + 1);
@@ -55,13 +39,12 @@ foreach ($questionNamesThird as $nameThird => $correctAnswer) {
     }
 }
 
-$rate*=5;
+if (isset($_SESSION['firstRate'])) $firstRate = $_SESSION['firstRate'];
+else $firstRate = 0;
+if (isset($_SESSION['secondRate'])) $secondRate = $_SESSION['secondRate'];
+else $secondRate = 0;
 
-if (isset($_SESSION['totalRate']))
-    $totalRate = $_SESSION['totalRate'];
-else $totalRate = 0;
-$totalRate += $rate;
-$_SESSION['totalRate'] = $totalRate;
+$totalRate = $firstRate + $secondRate*3 + $rate*5;
 
 echo "<br>";
 //echo "Not set : ".$notset."<br>";
@@ -76,10 +59,7 @@ echo "<br>";
     <meta charset="UTF-8">
     <title>Result</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <style>
-        strong {
-            color: red;
-        }
+    <style>  strong {color: red; }
     </style>
 </head>
 <body>

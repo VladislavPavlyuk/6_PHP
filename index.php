@@ -1,16 +1,6 @@
 <?php
 session_start();
-function randomMixArray($array)
-{
-    $mixedArr[0] = $r = 0;
-    for ($i = 0; $i < count($array) - 1; $i++) {
-        do {
-            $r = rand(0, count($array)-2);
-        } while (array_search($r, $mixedArr) > -1);
-        $mixedArr[$i] = $r;
-    }
-    return $mixedArr;
-}
+
 ?>
 
 <!DOCTYPE html>
@@ -20,9 +10,7 @@ function randomMixArray($array)
     <title>Test</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <style>
-        span.error {
-            color: red;
-        }
+        .error { color: red; }
     </style>
 </head>
 <body>
@@ -47,7 +35,7 @@ function test_input($data) {
                 <h4 align="center">Тест состоит из трех блоков вопросов.</h4>
             </div>
             <div>
-                <label>Введите имя</label>
+                <label>Введите имя студента</label>
                 <label><input type="text" name="name"></label><br>
                 <?php
                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -55,6 +43,9 @@ function test_input($data) {
                         $nameErr = "Name is required";
                     } else {
                         $name = test_input($_POST["name"]);
+                        if (!preg_match("/^[a-zA-Z-' ]*$/",$name)) {
+                            $nameErr = "Only letters and white space allowed";
+                        }
                     }
                 }
                 ?>
