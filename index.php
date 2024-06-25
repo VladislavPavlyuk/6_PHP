@@ -1,5 +1,16 @@
 <?php
 session_start();
+function randomMixArray($array)
+{
+    $mixedArr[0] = $r = 0;
+    for ($i = 0; $i < count($array) - 1; $i++) {
+        do {
+            $r = rand(0, count($array)-2);
+        } while (array_search($r, $mixedArr) > -1);
+        $mixedArr[$i] = $r;
+    }
+    return $mixedArr;
+}
 ?>
 
 <!DOCTYPE html>

@@ -1,11 +1,24 @@
 <?php
 session_start();
 
-//if (isset($_SESSION['student']))     echo "Студент : ".$_SESSION['student'].".<br>";
+if (isset($_SESSION['$mixedArray']))
+    $mixedArray = $_SESSION['$mixedArray'];
 
 if (isset($_SESSION['totalRate']))
     $totalRate = $_SESSION['totalRate'];
 else $totalRate = 0;
+
+function randomMixArray($array)
+{
+    $mixedArr[0] = $r = 0;
+    for ($i = 0; $i < count($array) - 1; $i++) {
+        do {
+            $r = rand(0, count($array)-2);
+        } while (array_search($r, $mixedArr) > -1);
+        $mixedArr[$i] = $r;
+    }
+    return $mixedArr;
+}
 
 $incorrect = $notset = $rate = 0;
 
@@ -29,15 +42,27 @@ else {
             $arrSecond2[$i] = explode(';', trim($a, "[]"));
 
             foreach ($arrSecond2[$i] as $j => $b)
-                if (!$b=="") {
+                if (!$b == "") {
                     $arrSecond3[$i][$j] = explode(',', trim($b, "[]"));
                 }
         }
 }
 
 
+foreach ( $arrSecond3 as $key => $item) {
+    $m = $mixedArray[$key];
+    $mixedArr[$key] = $arrSecond3[$m];
+}
+$arrSecond3 = $mixedArr;
+//var_dump($arrSecond3);
 
-for ($i = $j = $u = 0; $i < count($arrSecond2); $i++) {
+echo '<br>';
+foreach ($mixedArray as $i =>  $a) {
+    echo ' '.$a.' ';
+}
+echo '<br>';
+
+for ($i = $j = $u = 0; $i < count($arrSecond3); $i++) {
 
     $nameSecond = "question" . strval($i + 1) . "[]";
 
@@ -139,33 +164,41 @@ $_SESSION['totalRate']=$totalRate;
 
             $incorrect = $notset = $rate = 0;
 
-            $fileString = file_get_contents("test3.txt");
-            if (!$fileString) echo "Error in readfile";
+            $fileStringThird = file_get_contents("test3.txt");
+            if (!$fileStringThird) echo "Error in readfile";
             else {
-                $arr = explode('|', trim($fileString, "[]"));
+                $arrThird = explode('|', trim($fileStringThird, "[]"));
 
-                foreach ($arr as $i =>  $a)
+                foreach ($arrThird as $i =>  $a)
                     if (!$a == "") {
-                        $arr2[$i] = explode(';', trim($a, "[]"));
-
+                        $arrThird2[$i] = explode(';', trim($a, "[]"));
                     }
             }
 
-            for ($i = $j = $u = 0; $i < count($arr2); $i++) {
+            $mixedArray = randomMixArray($arrThird);
+            $_SESSION['$mixedArray'] = $mixedArray;
+
+            foreach ( $arrThird2 as $key => $item) {
+                $m = $mixedArray[$key];
+                $mixedArr[$key] = $arrThird2[$m];
+            }
+            $arrThird2 = $mixedArr;
+
+            for ($i = $j = $u = 0; $i < count($arrThird2); $i++) {
                 echo '<br>';
-                echo '<label>'.'<b>'.$arr2[$i][$j].'</b>' .".  ".'</label>';   //N
-                echo '<label>'.$arr2[$i][$j+1] .'</label>'; //question
+                echo '<label>'.'<b>'.$arrThird2[$i][$j].'</b>' .".  ".'</label>';   //N
+                echo '<label>'.$arrThird2[$i][$j+1] .'</label>'; //question
                 echo '<br>';
             if (isset($_SESSION['student'])&&($_SESSION['student']) == 'Admin') {
-                echo '<label>' . $arr2[$i][$j + 2] . '</label>'; //correct answer
+                echo '<label>' . $arrThird2[$i][$j + 2] . '</label>'; //correct answer
                 echo '<br>';
             }
             $name = "question" . strval($i + 1);
-            $questionNames[$name] = $arr2[$i][$j+2];
+            $questionNames[$name] = $arrThird2[$i][$j+2];
                 ?>
                 <div>
-                    <label><?php $arr2[$i][$j] ?></label>
-                    <label><?php $arr2[$i][$j+1] ?></label>
+                    <label><?php $arrThird2[$i][$j] ?></label>
+                    <label><?php $arrThird2[$i][$j+1] ?></label>
                     <input type="text" name='<?php echo $name ?>'>
                 </div><br>
                 <?php

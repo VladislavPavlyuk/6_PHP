@@ -2,6 +2,18 @@
 session_start();
 if (isset($_POST['name']))
     $_SESSION['student'] = $_POST['name'];
+
+function randomMixArray($array)
+{
+    $mixedArr[0] = $r = 0;
+    for ($i = 0; $i < count($array) - 1; $i++) {
+        do {
+            $r = rand(0, count($array)-2);
+        } while (array_search($r, $mixedArr) > -1);
+        $mixedArr[$i] = $r;
+    }
+    return $mixedArr;
+}
 ?>
 
 <!DOCTYPE html>
@@ -25,54 +37,51 @@ if (isset($_POST['name']))
                 echo "Сессионная переменная не создана!<br />";
 
             //$rate = $incorrect = 0;
-            $fileString = file_get_contents("test1.txt");
-            if (!$fileString) echo "Error in readfile";
+            $fileStringFirst = file_get_contents("test1.txt");
+            if (!$fileStringFirst) echo "Error in readfile";
             else {
-                $arr = explode('|', trim($fileString, "[]"));
-                foreach ($arr as $i =>  $a)
+                $arrFirst = explode('|', trim($fileStringFirst, "[]"));
+                foreach ($arrFirst as $i =>  $a)
                     if (!$a=="") {
-                        $arr2[$i] = explode(';', trim($a, "[]"));
+                        $arrFirst2[$i] = explode(';', trim($a, "[]"));
                     }
             }
 
-            for ($i = $j =0; $i < count($arr2); $i++) {
-                //echo '<br>';
+            $mixedArray = randomMixArray($arrFirst);
 
-              /*  if ($_SESSION['student']=='Admin') {
-                    echo '<label>' . '<b>' . $arr2[$i][$j] . '</b>' . ".  " . '</label>';   //N
-                    //echo '<label>'.$arr2[$i][$j+1] .'</label>'; //question
-                    //echo '<br>';
-                    //echo '<label>'.$arr2[$i][$j+2] .'</label>'; //radio1
-                    //echo '<label>'.$arr2[$i][$j+3] .'</label>'; //radio2
-                    //echo '<label>'.$arr2[$i][$j+4] .'</label>'; //radio3
-                    echo '<label>' . 'Правильный ответ : ' . $arr2[$i][$j + 5] . '</label>'; //correct answer
+            $_SESSION['$mixedArray'] = $mixedArray;
 
-                }*/
+            foreach ( $arrFirst2 as $key => $item) {
+                $m = $mixedArray[$key];
+                $mixedArrFirst[$key] = $arrFirst2[$m];
+            }
+            $arrFirst2 = $mixedArrFirst;
 
+            for ($i = $j =0; $i < count($arrFirst2); $i++) {
                 ?>
                 <br>
-                <label><b><?php echo $arr2[$i][$j] ?></b></label>
-                <label><?php echo $arr2[$i][$j+1] ?></label>
+                <label><b><?php echo $arrFirst2[$i][$j] ?></b></label>
+                <label><?php echo $arrFirst2[$i][$j+1] ?></label>
                 <?php if (isset($_SESSION['student'])&&($_SESSION['student'] == 'Admin')) {
-                echo '<br>'.'Правильный ответ : ' . $arr2[$i][$j + 5] . '<br>';
+                echo '<br>'.'Правильный ответ : ' . $arrFirst2[$i][$j + 5] . '<br>';
                 } ?>
 
 
                 <?php
                 $name="question".strval($i+1);
 
-                $questionNames[$name] = $arr2[$i][$j+5];
+                $questionNames[$name] = $arrFirst2[$i][$j+5];
 
                 ?>
                 <br>
                 <input type="radio" name= '<?php echo $name ?>'
-                       value="1"><?php echo '  '.$arr2[$i][$j+2] ?><br>
+                       value="1"><?php echo '  '.$arrFirst2[$i][$j+2] ?><br>
 
                 <input type="radio" name= '<?php echo $name ?>'
-                       value="2"><?php echo '  '.$arr2[$i][$j+3] ?><br>
+                       value="2"><?php echo '  '.$arrFirst2[$i][$j+3] ?><br>
 
                 <input type="radio" name= '<?php echo $name ?>'
-                       value="3"><?php echo '  '.$arr2[$i][$j+4] ?><br>
+                       value="3"><?php echo '  '.$arrFirst2[$i][$j+4] ?><br>
 
                 <?php
             }

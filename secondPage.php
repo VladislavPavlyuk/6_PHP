@@ -2,11 +2,24 @@
 
 session_start();
 
-//if (isset($_SESSION['student']))     echo "Студент : ".$_SESSION['student'].".<br>";
+if (isset($_SESSION['$mixedArray']))
+    $mixedArray = $_SESSION['$mixedArray'];
 
 if (isset($_SESSION['totalRate']))
     $totalRate = $_SESSION['totalRate'];
 else $totalRate = 0;
+
+function randomMixArray($array)
+{
+    $mixedArr[0] = $r = 0;
+    for ($i = 0; $i < count($array) - 1; $i++) {
+        do {
+            $r = rand(0, count($array)-2);
+        } while (array_search($r, $mixedArr) > -1);
+        $mixedArr[$i] = $r;
+    }
+    return $mixedArr;
+}
 
 $incorrect = $notset = $rate = 0;
 
@@ -21,6 +34,16 @@ else {
             $arrFirst2[$i] = explode(';', trim($a, "[]"));
         }
 }
+
+$mixedArray = randomMixArray($arrFirst);
+
+$_SESSION['$mixedArray'] = $mixedArray;
+
+foreach ( $arrFirst2 as $key => $item) {
+    $m = $mixedArray[$key];
+    $mixedArrFirst[$key] = $arrFirst2[$m];
+}
+$arrFirst2 = $mixedArrFirst;
 
 for ($i = $j =0; $i < count($arrFirst2); $i++) {
     $nameFirst = "question" . strval($i + 1);
@@ -62,30 +85,41 @@ $_SESSION['totalRate'] = $rate;
 
             echo "Total Score : ".$_SESSION['totalRate'].".<br>";
 
-            $fileString = file_get_contents("test2.txt");
+            $fileStringSecond = file_get_contents("test2.txt");
 
-            if (!$fileString) echo "Error in readfile";
+            if (!$fileStringSecond) echo "Error in readfile";
             else {
-                $arr = explode('|', trim($fileString, "[]"));
+                $arrSecond = explode('|', trim($fileStringSecond, "[]"));
 
-                foreach ($arr as $i =>  $a)
+                foreach ($arrSecond as $i =>  $a)
                     if (!$a == "") {
-                        $arr2[$i] = explode(';', trim($a, "[]"));
+                        $arrSecond2[$i] = explode(';', trim($a, "[]"));
 
-                        foreach ($arr2[$i] as $j => $b)
+                        foreach ($arrSecond2[$i] as $j => $b)
                             if (!$b=="") {
-                                $arr3[$i][$j] = explode(',', trim($b, "[]"));
+                                $arrSecond3[$i][$j] = explode(',', trim($b, "[]"));
                             }
                     }
             }
-            $q = count($arr2);
-            //echo "<br>Questions: ".$q."<br>";
 
-            for ($i = $j = $u = 0; $i < count($arr2); $i++) {
+            $mixedArray = randomMixArray($arrSecond);
+
+            $_SESSION['$mixedArray'] = $mixedArray;
+
+            foreach ( $arrSecond3 as $key => $item) {
+                $m = $mixedArray[$key];
+                $mixedArr[$key] = $arrSecond3[$m];
+            }
+
+            $arrSecond3 = $mixedArr;
+
+            $q = count($arrSecond2);
+
+            for ($i = $j = $u = 0; $i < count($arrSecond2); $i++) {
 
                 echo '<br>';
-                echo '<label>'.'<b>'.$arr3[$i][$j][$u].'</b>' .".  ".'</label>';   //N
-                echo '<label>'.$arr3[$i][$j+1][$u] .'</label>'; //question
+                echo '<label>'.'<b>'.$arrSecond3[$i][$j][$u].'</b>' .".  ".'</label>';   //N
+                echo '<label>'.$arrSecond3[$i][$j+1][$u] .'</label>'; //question
 
                 //echo '<label>'.$arr3[$i][$j+2][$u] .'</label>'; //radio1
                 //echo ' , ';
@@ -94,34 +128,34 @@ $_SESSION['totalRate'] = $rate;
                 //echo '<label>'.$arr3[$i][$j+4][$u] .'</label>'; //radio3
                 //echo ' , ';
                 if (isset($_SESSION['student'])&&($_SESSION['student']) == 'Admin') {
-                echo '<br><label>' . 'Правильный ответ' . $arr3[$i][$j + 5][$u] . '</label>'; //correct answer
+                echo '<br><label>' . 'Правильный ответ' . $arrSecond3[$i][$j + 5][$u] . '</label>'; //correct answer
                 echo ' , ';
-                if (count($arr3[$i][$j + 5]) > 1)
-                    echo '<label>' . $arr3[$i][$j + 5][$u + 1] . '</label>'; //correct answer
+                if (count($arrSecond3[$i][$j + 5]) > 1)
+                    echo '<label>' . $arrSecond3[$i][$j + 5][$u + 1] . '</label>'; //correct answer
                 echo ' , ';
-                if (count($arr3[$i][$j + 5]) > 2)
-                    echo '<label>' . $arr3[$i][$j + 5][$u + 2] . '</label>'; //correct answer
+                if (count($arrSecond3[$i][$j + 5]) > 2)
+                    echo '<label>' . $arrSecond3[$i][$j + 5][$u + 2] . '</label>'; //correct answer
             }
                 echo '<br>';
 
-                $name = "question" . strval($i + 1)."[]";
+                $nameSecond = "question" . strval($i + 1)."[]";
 
-                $questionArray[] = Array ($name => $arr3[$i][$j+5][$u]);
+                $questionArraySecond[] = Array ($nameSecond => $arrSecond3[$i][$j+5][$u]);
 
-                if (isset($arr3[$i][$j+5][$u+1]))
-                    $questionArray[] = Array ($name => $arr3[$i][$j+5][$u+1]);
+                if (isset($arrSecond3[$i][$j+5][$u+1]))
+                    $questionArraySecond[] = Array ($nameSecond => $arrSecond3[$i][$j+5][$u+1]);
                 if (isset($arr3[$i][$j+5][$u+2]))
-                    $questionArray[] = Array ($name => $arr3[$i][$j+5][$u+2]);
+                    $questionArraySecond[] = Array ($nameSecond => $arrSecond3[$i][$j+5][$u+2]);
                 //var_dump($questionArray);
                 ?>
-                <input type="checkbox" name='<?php echo $name ?>'
-                       value="1"><?php echo '  '.$arr3[$i][$j+2][$u] ?><br>
+                <input type="checkbox" name='<?php echo $nameSecond ?>'
+                       value="1"><?php echo '  '.$arrSecond3[$i][$j+2][$u] ?><br>
 
-                <input type="checkbox" name='<?php echo $name ?>'
-                       value="2"><?php echo '  '.$arr3[$i][$j+3][$u] ?><br>
+                <input type="checkbox" name='<?php echo $nameSecond ?>'
+                       value="2"><?php echo '  '.$arrSecond3[$i][$j+3][$u] ?><br>
 
-                <input type="checkbox" name='<?php echo $name ?>'
-                       value="3"><?php echo '  '.$arr3[$i][$j+4][$u] ?><br>
+                <input type="checkbox" name='<?php echo $nameSecond ?>'
+                       value="3"><?php echo '  '.$arrSecond3[$i][$j+4][$u] ?><br>
                 <?php
             }
 

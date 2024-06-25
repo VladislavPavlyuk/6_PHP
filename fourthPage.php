@@ -1,8 +1,24 @@
 <?php
 session_start();
+
+if (isset($_SESSION['$mixedArray']))
+    $mixedArray = $_SESSION['$mixedArray'];
+
 if (isset($_SESSION['totalRate']))
     $totalRate = $_SESSION['totalRate'];
 else $totalRate = 0;
+
+function randomMixArray($array)
+{
+    $mixedArr[0] = $r = 0;
+    for ($i = 0; $i < count($array) - 1; $i++) {
+        do {
+            $r = rand(0, count($array)-2);
+        } while (array_search($r, $mixedArr) > -1);
+        $mixedArr[$i] = $r;
+    }
+    return $mixedArr;
+}
 
 $incorrect = $notset = $rate = 0;
 
@@ -16,6 +32,12 @@ else {
             $arrThird2[$i] = explode(';', trim($a, "[]"));
         }
 }
+
+foreach ( $arrThird2 as $key => $item) {
+    $m = $mixedArray[$key];
+    $mixedArr[$key] = $arrThird2[$m];
+}
+$arrThird2 = $mixedArr;
 
 for ($i = $j = $u = 0; $i < count($arrThird2); $i++) {
     $nameThird = "question" . strval($i + 1);
