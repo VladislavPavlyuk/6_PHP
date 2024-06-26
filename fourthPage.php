@@ -74,9 +74,10 @@ echo "<br>";
 
         <?php
         if(isset($_POST['Result'])) {
+            echo ' <style>#result {display: none;}</style>';
             echo '        
             <form action="index.php" method="post">
-                <div id="result">
+                <div id="restart">
                     <h3 align="center">Поздравляем!</h3>
                     <label>Ваш результат : </label>
                     <strong>'.$totalRate.'</strong>
