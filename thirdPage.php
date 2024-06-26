@@ -196,7 +196,7 @@ $_SESSION['secondRate'] = $rate;
             }
             ?>
 
-            <br><input type="submit" class="btn btn-primary" value="Узнать результат" id="third">
+            <br><input type="submit" class="btn btn-primary" value="Далее" id="third">
 
         </form>
     </div>

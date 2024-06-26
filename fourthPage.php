@@ -59,25 +59,38 @@ echo "<br>";
     <meta charset="UTF-8">
     <title>Result</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <style>  strong {color: red; }
+    <style>
+        strong {color: red; }
     </style>
 </head>
 <body>
-
 <div class="container">
     <div class="column">
-        <form action="index.php" method="post">
-            <div>
-                <h3 align="center">Поздравляем!</h3>
-            </div>
-            <div>
-                <label>Ваш результат : </label>
-                <strong><?php echo $totalRate;?></strong>
-                <br><br>
-                <input type="submit" class="btn btn-primary" name="Restart" value="Пройти заново" id="first">
+        <form  method="post">
+            <div id="result">
+                <input type="submit" class="btn btn-primary" name="Result" value="Узнать результат" id="first">
             </div>
         </form>
 
+        <?php
+        if(isset($_POST['Result'])) {
+            echo '        
+            <form action="index.php" method="post">
+                <div id="result">
+                    <h3 align="center">Поздравляем!</h3>
+                    <label>Ваш результат : </label>
+                    <strong>'.$totalRate.'</strong>
+                    <br><br>
+                    <input type="submit" class="btn btn-primary" name="Restart" value="Пройти заново" id="first">
+                </div>
+            </form>';
+        }
+
+        if(isset($_POST['Restart'])) {
+            header('location: index.php');
+            exit();
+        }
+        ?>
 
     </div>
 </body>

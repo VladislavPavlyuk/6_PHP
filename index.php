@@ -1,6 +1,32 @@
 <?php
 session_start();
 
+$nameErr = $name = "";
+$valid = false;
+function test_input($data) {
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (empty($_POST["name"])) {
+        $nameErr = "Name is required";
+    } else {
+        $name = test_input($_POST["name"]);
+        if (!preg_match("/^[a-zA-Z-' ]*$/",$name)) {
+            $nameErr = "Only letters and white space allowed";
+        } else $valid = true;
+    }
+}
+
+if ($valid) {
+    $_SESSION['student'] = $_POST['name'];
+    header('location: firstPage.php');
+    exit();
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -15,21 +41,11 @@ session_start();
 </head>
 <body>
 <?php
-$nameErr = $name = "";
 
-if (($_SERVER["REQUEST_METHOD"] == "POST")&&(isset($_POST["name"]))) {
-    $name = test_input($_POST["name"]);
-}
-function test_input($data) {
-    $data = trim($data);
-    $data = stripslashes($data);
-    $data = htmlspecialchars($data);
-    return $data;
-}
 ?>
 <div class="container">
     <div class="column">
-        <form action="firstPage.php" method="post">
+        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
             <div>
                 <h3 align="center">Пройдите тест.</h3>
                 <h4 align="center">Тест состоит из трех блоков вопросов.</h4>
@@ -38,20 +54,11 @@ function test_input($data) {
                 <label>Введите имя студента</label>
                 <label><input type="text" name="name"></label><br>
                 <?php
-                if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                    if (empty($_POST["name"])) {
-                        $nameErr = "Name is required";
-                    } else {
-                        $name = test_input($_POST["name"]);
-                        if (!preg_match("/^[a-zA-Z-' ]*$/",$name)) {
-                            $nameErr = "Only letters and white space allowed";
-                        }
-                    }
-                }
+
                 ?>
                 <span class="error" ><?php echo $nameErr;?></span>
                 <br><br>
-                <input type="submit" class="btn btn-primary" name="submit" value="Далее" id="first">
+                <input type="submit" class="btn btn-primary" name="submit" value="Далее" id="index">
             </div>
         </form>
     </div>

@@ -6,12 +6,6 @@
 }*/
 
 session_start();
-if (isset($_POST['name']))
-    $_SESSION['student'] = $_POST['name'];
-else {
-    header('Location: ' . $_SERVER['HTTP_REFERER']);
-    exit();
-}
 
 function randomMixArray($array)
 {
@@ -95,6 +89,11 @@ function randomMixArray($array)
                        value="3"><?php echo '  '.$arrFirst2[$i][$j+4] ?><br>
 
                 <?php
+                if (empty($_POST['<?php echo $name ?>'])) {
+                    $answerErr = "Answer is required";
+                } else {
+                    $answer = test_input($_POST['<?php echo $name ?>']);
+                }
             }
             ?>
             <br><input type="submit" class="btn btn-primary" value="Далее" id="second">
