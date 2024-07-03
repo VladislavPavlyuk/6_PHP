@@ -190,7 +190,7 @@ $_SESSION['secondRate'] = $rate;
                 <div>
                     <label><?php $arrThird2[$i][$j] ?></label>
                     <label><?php $arrThird2[$i][$j+1] ?></label>
-                    <input type="text" name='<?php echo $name ?>'>
+                    <input type="text" name='<?php echo $name ?>' required>
                 </div><br>
                 <?php
             }

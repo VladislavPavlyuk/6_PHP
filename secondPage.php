@@ -67,7 +67,7 @@ $_SESSION['firstRate'] = $rate;
 <body>
 <div class="container">
     <div class="row">
-        <form action="thirdPage.php" method="post">
+        <form action="thirdPage.php" method="post" >
 
             <div><h2 align="center">Tест 2</h2></div>
 
@@ -139,6 +139,7 @@ $_SESSION['firstRate'] = $rate;
                     $questionArraySecond[] = Array ($nameSecond => $arrSecond3[$i][$j+5][$u+2]);
 
                 ?>
+
                 <input type="checkbox" name='<?php echo $nameSecond ?>'
                        value="1"><?php echo '  '.$arrSecond3[$i][$j+2][$u] ?><br>
 

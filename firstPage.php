@@ -80,13 +80,13 @@ function randomMixArray($array)
                 ?>
                 <br>
                 <input type="radio" name= '<?php echo $name ?>'
-                       value="1"><?php echo '  '.$arrFirst2[$i][$j+2] ?><br>
+                       value="1" required><?php echo '  '.$arrFirst2[$i][$j+2] ?><br>
 
                 <input type="radio" name= '<?php echo $name ?>'
-                       value="2"><?php echo '  '.$arrFirst2[$i][$j+3] ?><br>
+                       value="2" required><?php echo '  '.$arrFirst2[$i][$j+3] ?><br>
 
                 <input type="radio" name= '<?php echo $name ?>'
-                       value="3"><?php echo '  '.$arrFirst2[$i][$j+4] ?><br>
+                       value="3"required><?php echo '  '.$arrFirst2[$i][$j+4] ?><br>
 
                 <?php
                 if (empty($_POST['<?php echo $name ?>'])) {
